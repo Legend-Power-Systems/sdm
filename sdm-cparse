@@ -1309,7 +1309,7 @@ function extendimage() {
     # of 512 bytes
     local limgextb=$((limgext*1024*1024))
     local limgcb=$(stat --printf="%s" $ldimg)
-    local limgextb=$((limgextb + 512 - (limgcb%512))
+    local limgextb=$((limgextb + 512 - limgcb%512))
     if [ "$ddextend" == "1" ]
     then
 	trap "ctrlcexit" SIGINT
