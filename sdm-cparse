@@ -1325,7 +1325,9 @@ function extendimage() {
     done < <(parted -sm $ldimg unit MB print)
     partstart=${partstart%MB}
     imgend=${imgend%MB}
-    partsize=$(bc <<< "$imgend - $partstart")
+    # Raspberry Pi Imager will complain if the image is not an integer multiple
+    # of 512 bytes, round to next MB
+    partsize=$(python3 -c "import math; print(math.ceil($imgend - $partstart))")
     echo "* Resize partition 2 of '$ldimg' to ${partsize}MB"
     parted $ldimg -s resizepart 2 ${imgend}MB
 }
